@@ -1,0 +1,6 @@
+{
+  "name": "TruthPop – Truth or Dare",
+  "description": "A fun, colorful Truth or Dare party game generator for friends, couples, and families with instant offline prompts in English and Bangla.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

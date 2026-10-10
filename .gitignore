@@ -1,0 +1,29 @@
+# Gradle & Build caches
+.gradle/
+build/
+**/build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Android Studio & IDE
+*.iml
+.idea/
+.kotlin/
+.DS_Store
+
+# Local properties & Environment
+local.properties
+/local.properties
+.env
+.env.*
+!.env.example
+
+# Keystores & Signing secrets
+*.jks
+*.keystore
+*.pem
+*.p12
+
+# OS generated files
+Thumbs.db
