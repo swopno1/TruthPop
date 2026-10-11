@@ -25,7 +25,7 @@ import com.google.android.gms.ads.AdView
 fun AdBannerView(
     modifier: Modifier = Modifier
 ) {
-    if (!AdConfig.isAdsEnabled) return
+    if (!AdConfig.shouldServeAds()) return
 
     Box(
         modifier = modifier

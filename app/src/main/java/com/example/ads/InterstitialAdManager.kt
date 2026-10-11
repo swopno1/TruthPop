@@ -23,7 +23,7 @@ object InterstitialAdManager {
     private const val ACTIONS_BETWEEN_ADS = 6 // Polite frequency for party game sessions
 
     fun loadAd(context: Context) {
-        if (!AdConfig.isAdsEnabled || isLoading || interstitialAd != null) return
+        if (!AdConfig.shouldServeAds() || isLoading || interstitialAd != null) return
 
         isLoading = true
         val adRequest = AdRequest.Builder().build()
@@ -62,7 +62,7 @@ object InterstitialAdManager {
     }
 
     fun onUserAction(activity: Activity?) {
-        if (!AdConfig.isAdsEnabled || activity == null) return
+        if (!AdConfig.shouldServeAds() || activity == null) return
 
         actionCount++
         if (actionCount >= ACTIONS_BETWEEN_ADS) {

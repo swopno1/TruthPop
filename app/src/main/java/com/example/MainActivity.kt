@@ -21,18 +21,20 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Initialize Google Mobile Ads SDK asynchronously with emulator test configuration
-        try {
-            val requestConfig = com.google.android.gms.ads.RequestConfiguration.Builder()
-                .setTestDeviceIds(listOf(com.google.android.gms.ads.AdRequest.DEVICE_ID_EMULATOR))
-                .build()
-            MobileAds.setRequestConfiguration(requestConfig)
+        // Initialize Google Mobile Ads SDK asynchronously only if runtime supports ads
+        if (com.example.ads.AdConfig.shouldServeAds()) {
+            try {
+                val requestConfig = com.google.android.gms.ads.RequestConfiguration.Builder()
+                    .setTestDeviceIds(listOf(com.google.android.gms.ads.AdRequest.DEVICE_ID_EMULATOR))
+                    .build()
+                MobileAds.setRequestConfiguration(requestConfig)
 
-            MobileAds.initialize(this) {
-                com.example.ads.InterstitialAdManager.loadAd(this@MainActivity)
+                MobileAds.initialize(this) {
+                    com.example.ads.InterstitialAdManager.loadAd(this@MainActivity)
+                }
+            } catch (_: Throwable) {
+                // Keep app 100% playable even if Google Play Services is absent
             }
-        } catch (_: Throwable) {
-            // Keep app 100% playable even if Google Play Services is absent
         }
 
         setContent {
