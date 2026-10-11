@@ -42,8 +42,23 @@ fun AdBannerView(
                 AdView(context).apply {
                     setAdSize(AdSize.BANNER)
                     adUnitId = AdConfig.getBannerAdUnitId()
-                    val adRequest = AdRequest.Builder().build()
-                    loadAd(adRequest)
+                    adListener = object : com.google.android.gms.ads.AdListener() {
+                        override fun onAdFailedToLoad(error: com.google.android.gms.ads.LoadAdError) {
+                            // Gracefully handled for offline/emulator environments
+                        }
+                    }
+                    try {
+                        val adRequest = AdRequest.Builder().build()
+                        loadAd(adRequest)
+                    } catch (_: Throwable) {
+                        // Resilient fallback if render nodes or codecs unavailable
+                    }
+                }
+            },
+            onRelease = { adView ->
+                try {
+                    adView.destroy()
+                } catch (_: Throwable) {
                 }
             }
         )
