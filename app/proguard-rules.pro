@@ -2,13 +2,27 @@
 # You can control the set of applied configuration files using the
 # proguardFiles setting in build.gradle.
 
-# Keep data models
--keep class com.example.model.** { *; }
+# Disable aggressive bytecode optimization to prevent runtime crashes in Compose reflection
+-dontoptimize
 
-# Keep AdMob classes & interfaces
--keep class com.google.android.gms.ads.** { *; }
--keep interface com.google.android.gms.ads.** { *; }
+# Keep all com.example application classes and constructors
+-keep class com.example.** { *; }
+-keep interface com.example.** { *; }
 
-# Preserve line numbers and source file names for Google Play Console deobfuscation
+# Keep ViewModel constructors for reflection by ViewModelProvider
+-keepclassmembers class * extends androidx.lifecycle.ViewModel {
+    <init>(...);
+}
+
+# Keep Compose internal functions and classes
+-keep class androidx.compose.** { *; }
+
+# Keep Google Play Services and AdMob
+-keep class com.google.android.gms.** { *; }
+-keep interface com.google.android.gms.** { *; }
+-dontwarn com.google.android.gms.**
+
+# Preserve annotations, signatures, and line numbers for crash diagnostics
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
 -keepattributes SourceFile,LineNumberTable
 -renamesourcefileattribute SourceFile

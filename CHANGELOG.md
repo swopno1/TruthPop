@@ -2,6 +2,13 @@
 
 All notable changes to the **TruthPop – Truth or Dare** application will be documented in this file.
 
+## [3.0.0] - 2026-10-16
+
+### Changed & Optimized
+- **Play Store Memory Standards Compliance:** Optimized app drawables by resizing icon raster assets and removing unreferenced high-resolution images, reducing bitmap heap memory footprint by over 130MB.
+- **SDK Modernization:** Upgraded `androidx.fragment:fragment` to `1.8.6` across the runtime classpath, resolving Google Play SDK Console deprecation notices.
+- **Ad Lifecycle Resource Management:** Integrated lifecycle-aware pause/resume handlers into `AdBannerView` to free rendering buffers while in the background.
+
 ## [1.0.0] - 2026-10-09
 
 ### Added

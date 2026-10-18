@@ -25,26 +25,31 @@ object InterstitialAdManager {
     fun loadAd(context: Context) {
         if (!AdConfig.shouldServeAds() || isLoading || interstitialAd != null) return
 
-        isLoading = true
-        val adRequest = AdRequest.Builder().build()
+        try {
+            isLoading = true
+            val adRequest = AdRequest.Builder().build()
 
-        InterstitialAd.load(
-            context,
-            AdConfig.getInterstitialAdUnitId(),
-            adRequest,
-            object : InterstitialAdLoadCallback() {
-                override fun onAdLoaded(ad: InterstitialAd) {
-                    interstitialAd = ad
-                    isLoading = false
-                    setupCallback(ad, context)
-                }
+            InterstitialAd.load(
+                context,
+                AdConfig.getInterstitialAdUnitId(),
+                adRequest,
+                object : InterstitialAdLoadCallback() {
+                    override fun onAdLoaded(ad: InterstitialAd) {
+                        interstitialAd = ad
+                        isLoading = false
+                        setupCallback(ad, context)
+                    }
 
-                override fun onAdFailedToLoad(error: LoadAdError) {
-                    interstitialAd = null
-                    isLoading = false
+                    override fun onAdFailedToLoad(error: LoadAdError) {
+                        interstitialAd = null
+                        isLoading = false
+                    }
                 }
-            }
-        )
+            )
+        } catch (_: Throwable) {
+            interstitialAd = null
+            isLoading = false
+        }
     }
 
     private fun setupCallback(ad: InterstitialAd, context: Context) {
@@ -64,14 +69,17 @@ object InterstitialAdManager {
     fun onUserAction(activity: Activity?) {
         if (!AdConfig.shouldServeAds() || activity == null) return
 
-        actionCount++
-        if (actionCount >= ACTIONS_BETWEEN_ADS) {
-            actionCount = 0
-            if (interstitialAd != null) {
-                interstitialAd?.show(activity)
-            } else {
-                loadAd(activity)
+        try {
+            actionCount++
+            if (actionCount >= ACTIONS_BETWEEN_ADS) {
+                actionCount = 0
+                if (interstitialAd != null) {
+                    interstitialAd?.show(activity)
+                } else {
+                    loadAd(activity)
+                }
             }
+        } catch (_: Throwable) {
         }
     }
 }

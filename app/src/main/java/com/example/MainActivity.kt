@@ -19,7 +19,11 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        try {
+            enableEdgeToEdge()
+        } catch (_: Throwable) {
+            // Graceful fallback on older OEM system bar controllers
+        }
 
         // Initialize Google Mobile Ads SDK asynchronously only if runtime supports ads
         if (com.example.ads.AdConfig.shouldServeAds()) {
@@ -30,7 +34,10 @@ class MainActivity : ComponentActivity() {
                 MobileAds.setRequestConfiguration(requestConfig)
 
                 MobileAds.initialize(this) {
-                    com.example.ads.InterstitialAdManager.loadAd(this@MainActivity)
+                    try {
+                        com.example.ads.InterstitialAdManager.loadAd(this@MainActivity)
+                    } catch (_: Throwable) {
+                    }
                 }
             } catch (_: Throwable) {
                 // Keep app 100% playable even if Google Play Services is absent

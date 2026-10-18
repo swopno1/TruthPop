@@ -29,6 +29,13 @@ class TruthPopRobolectricTest {
     }
 
     @Test
+    fun testMainActivityLaunch() {
+        val controller = org.robolectric.Robolectric.buildActivity(MainActivity::class.java)
+        controller.setup()
+        assertNotNull(controller.get())
+    }
+
+    @Test
     fun testPromptRepositoryCompleteness() {
         val allPrompts = PromptRepository.prompts
         assertTrue("Prompt repository should not be empty", allPrompts.isNotEmpty())
