@@ -5,6 +5,7 @@
 **Developed by:** [ViveScript Solutions LLC](https://www.vivescriptsolutions.com/)  
 **Copyright:** © 2026 ViveScript Solutions LLC.  
 **Package:** `com.vivescriptsolutions.truthpop`  
+**Google Play:** [TruthPop – Truth or Dare](https://play.google.com/store/apps/details?id=com.vivescriptsolutions.truthpop)  
 
 ---
 
