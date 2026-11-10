@@ -43,17 +43,20 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.model.Language
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PlayerPickerDialog(
     players: List<String>,
     currentTurnPlayer: String?,
+    language: Language,
     onAddPlayer: (String) -> Unit,
     onRemovePlayer: (String) -> Unit,
     onSpinPlayer: () -> Unit,
     onDismiss: () -> Unit
 ) {
+    val isBn = language == Language.BANGLA
     var newPlayerName by remember { mutableStateOf("") }
 
     Dialog(onDismissRequest = onDismiss) {
@@ -77,12 +80,15 @@ fun PlayerPickerDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "🎉 Party Players",
+                        text = if (isBn) "🎉 পার্টির খেলোয়াড়" else "🎉 Party Players",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold
                     )
                     IconButton(onClick = onDismiss) {
-                        Icon(imageVector = Icons.Default.Close, contentDescription = "Close")
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = if (isBn) "বন্ধ করো" else "Close"
+                        )
                     }
                 }
 
@@ -117,7 +123,7 @@ fun PlayerPickerDialog(
                             Spacer(modifier = Modifier.width(12.dp))
                             Column {
                                 Text(
-                                    text = "Current Turn:",
+                                    text = if (isBn) "এখন পালা:" else "Current Turn:",
                                     style = MaterialTheme.typography.labelMedium,
                                     color = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
@@ -141,7 +147,7 @@ fun PlayerPickerDialog(
                     OutlinedTextField(
                         value = newPlayerName,
                         onValueChange = { newPlayerName = it },
-                        label = { Text("Player name") },
+                        label = { Text(if (isBn) "খেলোয়াড়ের নাম" else "Player name") },
                         singleLine = true,
                         modifier = Modifier
                             .weight(1f)
@@ -159,7 +165,7 @@ fun PlayerPickerDialog(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Add,
-                            contentDescription = "Add player",
+                            contentDescription = if (isBn) "খেলোয়াড় যোগ করো" else "Add player",
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
@@ -170,7 +176,10 @@ fun PlayerPickerDialog(
                 // List of players
                 if (players.isEmpty()) {
                     Text(
-                        text = "Add players above to take turns or spin who goes next!",
+                        text = if (isBn)
+                            "পালা নিতে উপরে খেলোয়াড় যোগ করো, বা লটারিতে পরের জন বেছে নাও!"
+                        else
+                            "Add players above to take turns or spin who goes next!",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -188,11 +197,11 @@ fun PlayerPickerDialog(
                                 trailingIcon = {
                                     IconButton(
                                         onClick = { onRemovePlayer(name) },
-                                        modifier = Modifier.size(18.dp)
+                                        modifier = Modifier.size(28.dp)
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Close,
-                                            contentDescription = "Remove $name"
+                                            contentDescription = if (isBn) "$name-কে সরাও" else "Remove $name"
                                         )
                                     }
                                 }
@@ -218,11 +227,11 @@ fun PlayerPickerDialog(
                         ) {
                             Icon(imageVector = Icons.Default.Casino, contentDescription = null)
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text("Pick Next Player!")
+                            Text(if (isBn) "পরের খেলোয়াড় বাছো!" else "Pick Next Player!")
                         }
                     } else {
                         TextButton(onClick = onDismiss) {
-                            Text("Done")
+                            Text(if (isBn) "ঠিক আছে" else "Done")
                         }
                     }
                 }

@@ -1,9 +1,10 @@
 # Terms of Service for TruthPop – Truth or Dare
 
-**Last Updated:** October 9, 2026  
-**Effective Date:** October 9, 2026  
+**Last Updated:** November 10, 2026  
+**Effective Date:** November 10, 2026  
 **Publisher:** ViveScript Solutions LLC  
-**Website:** [https://www.vivescriptsolutions.com/](https://www.vivescriptsolutions.com/)  
+**Website:** [https://www.vivescriptsolutions.com/en/apps/truthpop](https://www.vivescriptsolutions.com/en/apps/truthpop)  
+**Live version of these terms:** [https://www.vivescriptsolutions.com/en/apps/truthpop/terms](https://www.vivescriptsolutions.com/en/apps/truthpop/terms)  
 **Contact:** [legal@vivescriptsolutions.com](mailto:legal@vivescriptsolutions.com)
 
 ---
@@ -40,7 +41,7 @@ TruthPop is an interactive mobile party entertainment game that randomly generat
 
 ## 5. Third-Party Services and Advertisements
 
-TruthPop displays non-intrusive advertisements served through the official Google Mobile Ads SDK (AdMob). Your interaction with third-party advertisements is governed by the terms and policies of the respective advertisers and Google. ViveScript Solutions LLC does not endorse or assume liability for third-party advertisements or products.
+TruthPop displays non-intrusive advertisements served through the official Google Mobile Ads SDK (AdMob): a banner docked at the bottom of the screen and an interstitial shown at most once every 6 pop/skip actions. Where required by law (EEA/UK), ads load only after your consent via Google's consent form. Your interaction with third-party advertisements is governed by the terms and policies of the respective advertisers and Google. ViveScript Solutions LLC does not endorse or assume liability for third-party advertisements or products.
 
 ---
 
@@ -63,6 +64,6 @@ These Terms shall be governed by and construed in accordance with the laws of th
 For questions or inquiries regarding these Terms of Service, please contact:
 
 **ViveScript Solutions LLC**  
-Website: [https://www.vivescriptsolutions.com/](https://www.vivescriptsolutions.com/)  
+Website: [https://www.vivescriptsolutions.com/en/apps/truthpop](https://www.vivescriptsolutions.com/en/apps/truthpop)  
 Email: [legal@vivescriptsolutions.com](mailto:legal@vivescriptsolutions.com)  
 Address: 1209 Orange Street, Wilmington, DE 19801, USA

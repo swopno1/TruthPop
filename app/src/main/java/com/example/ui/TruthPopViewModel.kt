@@ -1,8 +1,10 @@
 package com.example.ui
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.PromptRepository
+import com.example.data.UserPreferencesRepository
 import com.example.model.GameCategory
 import com.example.model.Intensity
 import com.example.model.Language
@@ -11,7 +13,9 @@ import com.example.model.PromptType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 data class TruthPopUiState(
@@ -30,7 +34,9 @@ data class TruthPopUiState(
     val completedCount: Int = 0
 )
 
-class TruthPopViewModel : ViewModel() {
+class TruthPopViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val prefsRepository = UserPreferencesRepository(application.applicationContext)
 
     private val _uiState = MutableStateFlow(TruthPopUiState())
     val uiState: StateFlow<TruthPopUiState> = _uiState.asStateFlow()
@@ -39,6 +45,23 @@ class TruthPopViewModel : ViewModel() {
 
     init {
         rollNextPrompt(forceReveal = true)
+        // Overlay persisted preferences (language, haptics, favorites) once loaded.
+        viewModelScope.launch {
+            try {
+                val prefs = prefsRepository.prefs.first()
+                _uiState.update { state ->
+                    state.copy(
+                        currentLanguage = prefs.languageCode?.let { code ->
+                            Language.entries.firstOrNull { it.code == code }
+                        } ?: state.currentLanguage,
+                        isHapticsEnabled = prefs.haptics ?: state.isHapticsEnabled,
+                        favorites = prefs.favorites ?: state.favorites
+                    )
+                }
+            } catch (_: Exception) {
+                // Corrupt or missing prefs: keep defaults.
+            }
+        }
     }
 
     fun selectType(type: PromptType?) {
@@ -59,12 +82,27 @@ class TruthPopViewModel : ViewModel() {
     fun toggleLanguage() {
         _uiState.update {
             val newLang = if (it.currentLanguage == Language.ENGLISH) Language.BANGLA else Language.ENGLISH
+            viewModelScope.launch {
+                try {
+                    prefsRepository.setLanguage(newLang.code)
+                } catch (_: Exception) {
+                    // Persistence is best-effort; in-memory state already updated.
+                }
+            }
             it.copy(currentLanguage = newLang)
         }
     }
 
     fun toggleHaptics() {
-        _uiState.update { it.copy(isHapticsEnabled = !it.isHapticsEnabled) }
+        _uiState.update {
+            viewModelScope.launch {
+                try {
+                    prefsRepository.setHaptics(!it.isHapticsEnabled)
+                } catch (_: Exception) {
+                }
+            }
+            it.copy(isHapticsEnabled = !it.isHapticsEnabled)
+        }
     }
 
     fun toggleFavorite(promptId: String) {
@@ -73,6 +111,12 @@ class TruthPopViewModel : ViewModel() {
                 state.favorites - promptId
             } else {
                 state.favorites + promptId
+            }
+            viewModelScope.launch {
+                try {
+                    prefsRepository.setFavorites(updated)
+                } catch (_: Exception) {
+                }
             }
             state.copy(favorites = updated)
         }

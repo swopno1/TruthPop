@@ -1,0 +1,5 @@
+• Your language, haptics, and favorites are now remembered between sessions.
+• Fully bilingual: prompt cards, player picker, and About screen in English and Bangla.
+• Every shared prompt now includes a one-tap Play Store install link.
+• Faster, smaller build with the latest stable SDKs.
+• Free with ads; gameplay works fully offline.

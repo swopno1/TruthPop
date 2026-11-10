@@ -43,13 +43,13 @@
 
 ## Technology Stack
 
-- **Language:** Kotlin 2.2.10
-- **UI Framework:** Jetpack Compose with Material 3 (M3)
+- **Language:** Kotlin 2.4.21
+- **UI Framework:** Jetpack Compose BOM 2026.09.00 with Material 3 (M3)
 - **Architecture:** MVVM (Model-View-ViewModel) with StateFlow
-- **Advertising:** Google Mobile Ads SDK (`com.google.android.gms:play-services-ads:23.6.0`)
-- **Image Loading:** Coil Compose
-- **Testing:** JUnit 4 & Robolectric
-- **Build System:** Gradle (Kotlin DSL) with Version Catalogs (`libs.versions.toml`)
+- **Local Persistence:** DataStore Preferences 1.3.0 (language, haptics, favorites — on-device only)
+- **Advertising:** Google Mobile Ads SDK (`play-services-ads:25.5.0`) with UMP consent (`user-messaging-platform:4.0.0`); demo units in debug, production units in release
+- **Testing:** JUnit 4 & Robolectric 4.17
+- **Build System:** Gradle 9.9.0, AGP 9.5.1 (Kotlin DSL) with Version Catalogs (`libs.versions.toml`)
 
 ---
 
@@ -71,9 +71,9 @@
 │       ├── main/
 │       │   ├── AndroidManifest.xml     # Manifest, permissions, and AdMob metadata
 │       │   ├── java/com/example/
-│       │   │   ├── MainActivity.kt     # App entry point with edge-to-edge
-│       │   │   ├── ads/                # AdMob configuration and banner views
-│       │   │   ├── data/               # Curated offline prompt repository
+│       │   │   ├── MainActivity.kt     # App entry point, edge-to-edge, UMP-gated ads init
+│       │   │   ├── ads/                # AdConfig, ConsentManager, banner + interstitial
+│       │   │   ├── data/               # Curated offline prompt repository + prefs repo
 │       │   │   ├── model/              # Data models (PromptItem, Category, Intensity)
 │       │   │   ├── ui/                 # Jetpack Compose UI (TruthPopApp, ViewModel)
 │       │   │   │   ├── components/     # AboutDialog, PlayerPickerSheet
@@ -83,14 +83,17 @@
 │       └── test/java/com/example/      # Unit and Robolectric tests
 ├── gradle/libs.versions.toml           # Dependency version catalog
 ├── play_store_assets/                  # Google Play icon, feature graphic & screenshots
-├── production_build/                   # Release Android App Bundle (.aab)
 ├── README.md                           # Project documentation
 ├── LICENSE                             # MIT license + proprietary branding notice
 ├── PRIVACY_POLICY.md                   # Privacy policy
 ├── TERMS_OF_SERVICE.md                 # Terms of service
 ├── PLAY_STORE_METADATA.md              # Store listings, descriptions, and keywords
 ├── PLAY_STORE_DATA_SAFETY.md           # Play Console data safety answers
+├── GOOGLE_PLAY_DECLARATIONS.md         # Console declarations master reference
+├── EU_TRADE_POLICY_COMPLIANCE.md       # EU DSA/trader/GDPR guide
 ├── DESIGN_ASSETS.md                    # Visual identity specifications
+├── ANDROID_AUDIT_REPORT.md             # Full technical audit (v4.0)
+├── PRODUCTION_READINESS.md             # Release verdict + pre-submit checklist
 └── CHANGELOG.md                        # Version release history
 ```
 

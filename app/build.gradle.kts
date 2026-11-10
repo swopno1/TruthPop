@@ -1,34 +1,61 @@
+import java.util.Properties as JProperties
+
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.compose)
-  alias(libs.plugins.google.devtools.ksp)
-  alias(libs.plugins.secrets)
-  // alias(libs.plugins.google.services)
 }
 
 android {
-  namespace = "com.example"
-  compileSdk { version = release(36) { minorApiLevel = 1 } }
+  namespace = "com.vivescriptsolutions.truthpop"
+  compileSdk { version = release(37) }
 
   defaultConfig {
     applicationId = "com.vivescriptsolutions.truthpop"
     minSdk = 24
     targetSdk = 36
-    versionCode = 3
-    versionName = "3.0"
+    versionCode = 4
+    versionName = "4.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
-  // Do not remove or modify these signingConfigs. They are necessary for building, installing,
-  // and updating Android apps in AI Studio.
   signingConfigs {
     create("release") {
+      // Passwords come from environment or local.properties (both gitignored).
+      // Never commit keystore passwords to version control.
+      val localProps = JProperties()
+      val localPropsFile = rootProject.file("local.properties")
+      if (localPropsFile.exists()) {
+        localPropsFile.inputStream().use { localProps.load(it) }
+      }
+      fun secret(envName: String, propName: String): String? =
+        System.getenv(envName) ?: (localProps.getProperty(propName)?.takeIf { it.isNotBlank() })
+
+      // Fail fast only when a release artifact is actually requested, so that
+      // debug builds, tests, and lint keep working without signing secrets.
+      val wantsRelease = gradle.startParameter.taskNames.any { it.contains("Release", ignoreCase = true) }
       val keystorePath = System.getenv("KEYSTORE_PATH") ?: "${rootDir}/my-upload-key.jks"
-      storeFile = file(keystorePath)
-      storePassword = System.getenv("STORE_PASSWORD")
-      keyAlias = "upload"
-      keyPassword = System.getenv("KEY_PASSWORD")
+      val keyFile = file(keystorePath)
+      if (wantsRelease && !keyFile.exists()) {
+        throw GradleException(
+          "Release keystore not found at $keystorePath. " +
+            "Place my-upload-key.jks in the project root (it is gitignored) or set KEYSTORE_PATH."
+        )
+      }
+      storeFile = keyFile
+      storePassword = secret("STORE_PASSWORD", "storePassword")
+        ?: if (wantsRelease) {
+          throw GradleException("Missing STORE_PASSWORD: export it or set storePassword in local.properties.")
+        } else {
+          "placeholder-debug-only"
+        }
+      keyAlias = System.getenv("KEY_ALIAS") ?: localProps.getProperty("keyAlias") ?: "upload"
+      keyPassword = secret("KEY_PASSWORD", "keyPassword")
+        ?: if (wantsRelease) {
+          throw GradleException("Missing KEY_PASSWORD: export it or set keyPassword in local.properties.")
+        } else {
+          "placeholder-debug-only"
+        }
     }
     create("debugConfig") {
       storeFile = file("${rootDir}/debug.keystore")
@@ -47,14 +74,17 @@ android {
       ndk {
         debugSymbolLevel = "SYMBOL_TABLE"
       }
-      // Do not remove or modify this signingConfig assignment. It is necessary for Android apps in
-      // AI Studio.
       signingConfig = signingConfigs.getByName("release")
+      // Live Google AdMob ad units (release only).
+      buildConfigField("String", "ADMOB_BANNER_AD_UNIT_ID", "\"ca-app-pub-5222053984568989/1274631134\"")
+      buildConfigField("String", "ADMOB_INTERSTITIAL_AD_UNIT_ID", "\"ca-app-pub-5222053984568989/1364015068\"")
     }
     debug {
-      // Do not remove or modify this signingConfig assignment. It is necessary for Android apps in
-      // AI Studio.
       signingConfig = signingConfigs.getByName("debugConfig")
+      // Official Google demo ad units: testing can never taint live ad traffic
+      // or trigger invalid-activity enforcement on the production units.
+      buildConfigField("String", "ADMOB_BANNER_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/6300978111\"")
+      buildConfigField("String", "ADMOB_INTERSTITIAL_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/1033173712\"")
     }
   }
   compileOptions {
@@ -65,6 +95,10 @@ android {
     compose = true
     buildConfig = true
   }
+  lint {
+    checkReleaseBuilds = true
+    abortOnError = true
+  }
   testOptions { unitTests { isIncludeAndroidResources = true } }
   dependenciesInfo {
     includeInApk = false
@@ -72,67 +106,26 @@ android {
   }
 }
 
-// Configure the Secrets Gradle Plugin to use .env and .env.example files
-// to match the convention used in Web projects.
-secrets {
-  propertiesFileName = ".env"
-  defaultPropertiesFileName = ".env.example"
-  ignoreList.add("FIREBASE_APPCHECK_DEBUG_TOKEN")
-}
-
-// googleServices { missingGoogleServicesStrategy = MissingGoogleServicesStrategy.WARN }
-
-// Some unused dependencies are commented out below instead of being removed.
-// This makes it easy to add them back in the future if needed.
 dependencies {
   implementation(platform(libs.androidx.compose.bom))
-  // implementation(platform(libs.firebase.bom))
-  // implementation(libs.accompanist.permissions)
   implementation(libs.androidx.activity.compose)
-  // implementation(libs.androidx.camera.camera2)
-  // implementation(libs.androidx.camera.core)
-  // implementation(libs.androidx.camera.lifecycle)
-  // implementation(libs.androidx.camera.view)
   implementation(libs.androidx.compose.material.icons.core)
   implementation(libs.androidx.compose.material.icons.extended)
   implementation(libs.androidx.compose.material3)
   implementation(libs.androidx.compose.ui)
   implementation(libs.androidx.compose.ui.graphics)
-  implementation(libs.androidx.compose.ui.tooling.preview)
-  implementation(libs.androidx.core.ktx)
-  // implementation(libs.androidx.datastore.preferences)
+  implementation(libs.androidx.datastore.preferences)
   implementation(libs.androidx.lifecycle.runtime.compose)
   implementation(libs.androidx.lifecycle.runtime.ktx)
   implementation(libs.androidx.lifecycle.viewmodel.compose)
-  // implementation(libs.androidx.navigation.compose)
-  // implementation(libs.androidx.room.ktx)
-  // implementation(libs.androidx.room.runtime)
-  // implementation(libs.coil.compose)
-  implementation(libs.androidx.fragment.ktx)
-  implementation(libs.play.services.ads)
-  // implementation(libs.converter.moshi)
-  // implementation(libs.firebase.ai)
-  // implementation(libs.firebase.appcheck.recaptcha)
-  // implementation(libs.firebase.appcheck.debug)
   implementation(libs.kotlinx.coroutines.android)
   implementation(libs.kotlinx.coroutines.core)
-  // implementation(libs.logging.interceptor)
-  // implementation(libs.moshi.kotlin)
-  // implementation(libs.okhttp)
-  // implementation(libs.retrofit)
-  testImplementation(libs.androidx.compose.ui.test.junit4)
+  implementation(libs.play.services.ads)
+  implementation(libs.play.services.ump)
   testImplementation(libs.androidx.core)
-  testImplementation(libs.androidx.junit)
   testImplementation(libs.junit)
-  testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.robolectric)
-  androidTestImplementation(platform(libs.androidx.compose.bom))
-  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-  androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.runner)
-  debugImplementation(libs.androidx.compose.ui.test.manifest)
   debugImplementation(libs.androidx.compose.ui.tooling)
-  // "ksp"(libs.androidx.room.compiler)
-  // "ksp"(libs.moshi.kotlin.codegen)
 }

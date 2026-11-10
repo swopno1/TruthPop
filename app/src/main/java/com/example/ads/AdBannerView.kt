@@ -3,8 +3,11 @@ package com.example.ads
 import android.view.View
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -25,12 +28,14 @@ import com.google.android.gms.ads.LoadAdError
 fun AdBannerView(
     modifier: Modifier = Modifier
 ) {
-    if (!AdConfig.shouldServeAds()) return
+    val canShowAds by AdConfig.canShowAdsFlow.collectAsState()
+    if (!AdConfig.isAdsEnabled || !canShowAds || AdConfig.isEmulator()) return
 
     Box(
         modifier = modifier
             .fillMaxWidth()
             .testTag("ad_banner_container")
+            .navigationBarsPadding()
             .padding(vertical = 4.dp),
         contentAlignment = Alignment.Center
     ) {

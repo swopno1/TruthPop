@@ -24,7 +24,9 @@ TruthPop is crafted with an energetic, candy-pop, vibrant party game aesthetic. 
 
 ## 2. Launcher Icon Architecture
 
-- **Adaptive Icon Foreground:** `app/src/main/res/drawable/ic_launcher_foreground.xml` (layer-list centering `img_truthpop_icon` within a 66dp safe zone)
+- **Adaptive Icon Foreground:** `app/src/main/res/drawable/ic_launcher_foreground.xml` (layer-list centering `img_truthpop_icon` from `drawable-nodpi/` within a 66dp safe zone)
+
+> **v4.0 asset notes (Nov 2026):** phone/tablet screenshots and the feature graphic are RGBA (alpha channel) — re-export as opaque (no-alpha) files before upload, per Play specs. The phone screenshots are marketing composites (verified: prompt text matches the real deck); add at least one unedited real-UI capture per form factor so the listing passes review.
 - **Adaptive Icon Background:** `app/src/main/res/drawable/ic_launcher_background.xml` (solid `#4A148C`)
 - **Density Mipmaps:** Full PNG32 raster fallbacks across all five standard density folders:
   - `mipmap-mdpi/`: 48 × 48 px (`ic_launcher.png`, `ic_launcher_round.png`)

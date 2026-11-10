@@ -8,6 +8,7 @@ import com.example.model.Intensity
 import com.example.model.Language
 import com.example.model.PromptType
 import com.example.ui.TruthPopViewModel
+import com.vivescriptsolutions.truthpop.R
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -66,7 +67,8 @@ class TruthPopRobolectricTest {
 
     @Test
     fun testViewModelStateFlow() {
-        val vm = TruthPopViewModel()
+        val app = ApplicationProvider.getApplicationContext<android.app.Application>()
+        val vm = TruthPopViewModel(app)
         val initial = vm.uiState.value
 
         assertEquals(Language.ENGLISH, initial.currentLanguage)
@@ -112,9 +114,18 @@ class TruthPopRobolectricTest {
 
     @Test
     fun testAdConfigIdentifiers() {
+        // Manifest-linked production App ID is constant across variants.
         assertEquals("ca-app-pub-5222053984568989~4125909776", com.example.ads.AdConfig.APP_ID)
-        assertEquals("ca-app-pub-5222053984568989/1274631134", com.example.ads.AdConfig.BANNER_AD_UNIT_ID)
-        assertEquals("ca-app-pub-5222053984568989/1364015068", com.example.ads.AdConfig.INTERSTITIAL_AD_UNIT_ID)
+        // Unit tests run on the debug variant, which must resolve Google demo
+        // units — live production units must never appear in a debug binary.
+        assertEquals(
+            "ca-app-pub-3940256099942544/6300978111",
+            com.example.ads.AdConfig.getBannerAdUnitId()
+        )
+        assertEquals(
+            "ca-app-pub-3940256099942544/1033173712",
+            com.example.ads.AdConfig.getInterstitialAdUnitId()
+        )
         assertTrue(com.example.ads.AdConfig.isAdsEnabled)
     }
 }

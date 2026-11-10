@@ -8,6 +8,8 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.example.ads.AdConfig
+import com.example.ads.ConsentManager
 import com.example.ui.TruthPopApp
 import com.example.ui.TruthPopViewModel
 import com.example.ui.theme.TruthPopTheme
@@ -25,23 +27,30 @@ class MainActivity : ComponentActivity() {
             // Graceful fallback on older OEM system bar controllers
         }
 
-        // Initialize Google Mobile Ads SDK asynchronously only if runtime supports ads
-        if (com.example.ads.AdConfig.shouldServeAds()) {
-            try {
-                val requestConfig = com.google.android.gms.ads.RequestConfiguration.Builder()
-                    .setTestDeviceIds(listOf(com.google.android.gms.ads.AdRequest.DEVICE_ID_EMULATOR))
-                    .build()
-                MobileAds.setRequestConfiguration(requestConfig)
+        // Gather UMP consent first; Mobile Ads only initializes with clearance.
+        // The game stays 100% playable even if ads never initialize.
+        try {
+            ConsentManager.gatherConsent(this) { canRequestAds ->
+                if (!canRequestAds || AdConfig.isEmulator()) return@gatherConsent
+                try {
+                    val requestConfig = com.google.android.gms.ads.RequestConfiguration.Builder()
+                        .setTestDeviceIds(listOf(com.google.android.gms.ads.AdRequest.DEVICE_ID_EMULATOR))
+                        .build()
+                    MobileAds.setRequestConfiguration(requestConfig)
 
-                MobileAds.initialize(this) {
-                    try {
-                        com.example.ads.InterstitialAdManager.loadAd(this@MainActivity)
-                    } catch (_: Throwable) {
+                    MobileAds.initialize(this@MainActivity) {
+                        try {
+                            AdConfig.setCanShowAds(true)
+                            com.example.ads.InterstitialAdManager.loadAd(this@MainActivity)
+                        } catch (_: Throwable) {
+                        }
                     }
+                } catch (_: Throwable) {
+                    // Keep app 100% playable even if Google Play Services is absent
                 }
-            } catch (_: Throwable) {
-                // Keep app 100% playable even if Google Play Services is absent
             }
+        } catch (_: Throwable) {
+            // Keep app 100% playable even if consent services are absent
         }
 
         setContent {

@@ -1,5 +1,7 @@
 # Final Pre-Release Audit & Verification Report — TruthPop
 
+> **SUPERSEDED (Nov 10, 2026):** This report describes the v1.0-era build and contains stale claims (version, bundle size/location, banner lifecycle details). The current audit is `ANDROID_AUDIT_REPORT.md` with the release verdict in `PRODUCTION_READINESS.md`. This file is kept for history only.
+
 **Application:** TruthPop – Truth or Dare  
 **Publisher:** ViveScript Solutions LLC  
 **Website:** [https://www.vivescriptsolutions.com/](https://www.vivescriptsolutions.com/)  

@@ -4,11 +4,14 @@
 **Package Name:** `com.vivescriptsolutions.truthpop`  
 **Publisher:** ViveScript Solutions LLC  
 **Primary Language:** English (US) / Bengali (Bangla)  
+**Version:** 4.0 (Version Code: 4)  
+**Privacy Policy URL:** https://www.vivescriptsolutions.com/en/apps/truthpop/privacy  
+**Support Email:** privacy@vivescriptsolutions.com  
 
 ---
 
 ## Short Description (80 characters limit)
-> Instant Truth or Dare party game for friends, couples & family. 100% offline! (76 chars)
+> Truth or Dare party game for friends, couples & family. Free, offline! (70 chars)
 
 ---
 
@@ -31,7 +34,8 @@ Whether you are chilling with close friends, bonding on a family game night, or 
   - 🔴 **Spicy:** Bold, cheeky questions and daring challenges!
 • **Bilingual English & Bangla Support:** Switch seamlessly between English and Bangla (বাংলা) with one tap—perfect for South Asian party gatherings and bilingual friend circles.
 • **Party Turn Picker:** Add players' names to the quick turn selector to see whose turn it is next!
-• **100% Offline & Private:** Play anywhere—on road trips, during flights, or at outdoor picnics. No internet connection, account creation, or login required.
+• **Offline Gameplay & Private:** Play anywhere—on road trips, during flights, or at outdoor picnics. No account creation or login required. (Internet is only needed to display ads.)
+• **Free With Ads:** Non-intrusive banner plus an occasional interstitial, with consent controls where required.
 • **Safe & Consensual:** We believe in pressure-free fun. Every dare is optional, prompts exclude dangerous stunts or humiliating tasks, and players can skip freely with zero penalty.
 • **One-Tap Sharing:** Share any funny prompt card directly to WhatsApp, Instagram, Messenger, or Twitter with friends who could not make it to the party!
 
@@ -46,16 +50,13 @@ Download **TruthPop – Truth or Dare** today and make every gathering an unforg
 ---
 
 ## Google Play Store Category & Tags
-- **Primary Category:** Entertainment / Casual
-- **Secondary Category:** Board & Trivia
-- **Recommended Tags:**
+- **Primary Category:** Entertainment
+- **Tags (max 5 — pick exactly these):**
   - Party Games
   - Truth or Dare
   - Casual
   - Offline Games
   - Couples Games
-  - Family Fun
-  - Multiplayer Icebreaker
 
 ---
 

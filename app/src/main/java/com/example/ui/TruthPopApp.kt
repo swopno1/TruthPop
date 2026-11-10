@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -127,19 +128,20 @@ fun TruthPopApp(
                     }
                 },
                 actions = {
-                    // Language switch chip
+                    // Language switch chip (48dp target: easy to tap, hard to hit by accident)
                     Surface(
+                        onClick = {
+                            HapticHelper.popVibrate(context, uiState.isHapticsEnabled)
+                            viewModel.toggleLanguage()
+                        },
                         shape = RoundedCornerShape(12.dp),
                         color = MaterialTheme.colorScheme.primaryContainer,
                         modifier = Modifier
-                            .clickable {
-                                HapticHelper.popVibrate(context, uiState.isHapticsEnabled)
-                                viewModel.toggleLanguage()
-                            }
+                            .defaultMinSize(minWidth = 64.dp, minHeight = 48.dp)
                             .testTag("language_switch_button")
                     ) {
                         Row(
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
@@ -443,13 +445,17 @@ fun TruthPopApp(
 
     // Dialogs
     if (uiState.showAboutDialog) {
-        AboutDialog(onDismiss = { viewModel.setAboutDialogVisible(false) })
+        AboutDialog(
+            language = uiState.currentLanguage,
+            onDismiss = { viewModel.setAboutDialogVisible(false) }
+        )
     }
 
     if (uiState.showPlayerPicker) {
         PlayerPickerDialog(
             players = uiState.players,
             currentTurnPlayer = uiState.currentTurnPlayer,
+            language = uiState.currentLanguage,
             onAddPlayer = { viewModel.addPlayer(it) },
             onRemovePlayer = { viewModel.removePlayer(it) },
             onSpinPlayer = { viewModel.spinNextPlayer() },
@@ -547,15 +553,17 @@ fun PromptPopCard(
 
                 // Category & Intensity (Dark high-contrast text)
                 Row(verticalAlignment = Alignment.CenterVertically) {
+                    val categoryLabel = if (language == Language.BANGLA) prompt.category.labelBn else prompt.category.labelEn
+                    val intensityLabel = if (language == Language.BANGLA) prompt.intensity.labelBn else prompt.intensity.labelEn
                     Text(
-                        text = "${prompt.category.iconEmoji} ${prompt.category.labelEn}",
+                        text = "${prompt.category.iconEmoji} $categoryLabel",
                         style = MaterialTheme.typography.labelMedium,
                         color = Color(0xFF334155),
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = "• ${prompt.intensity.emoji} ${prompt.intensity.labelEn}",
+                        text = "• ${prompt.intensity.emoji} $intensityLabel",
                         style = MaterialTheme.typography.labelMedium,
                         color = Color(0xFF334155),
                         fontWeight = FontWeight.Bold
@@ -691,15 +699,28 @@ fun PromptPopCard(
 private fun sharePrompt(context: Context, prompt: PromptItem, language: Language) {
     val text = if (language == Language.BANGLA) prompt.textBn else prompt.textEn
     val typeLabel = if (prompt.type == PromptType.TRUTH) "🎯 TRUTH" else "🔥 DARE"
-    val shareContent = """
+    val storeUrl = "https://play.google.com/store/apps/details?id=com.vivescriptsolutions.truthpop"
+    val shareContent = if (language == Language.BANGLA) {
+        """
+        🎈 TruthPop চ্যালেঞ্জ!
+        $typeLabel [${prompt.category.labelBn} - ${prompt.intensity.labelBn}]
+
+        "$text"
+
+        উত্তর দিতে পারবে, নাকি সাহস করে দেখাবে?
+        TruthPop ডাউনলোড করো: $storeUrl
+        """.trimIndent()
+    } else {
+        """
         🎈 TruthPop Challenge!
         $typeLabel [${prompt.category.labelEn} - ${prompt.intensity.labelEn}]
-        
+
         "$text"
-        
+
         Can you answer or dare to do it?
-        Play TruthPop – Truth or Dare!
-    """.trimIndent()
+        Get TruthPop: $storeUrl
+        """.trimIndent()
+    }
 
     val sendIntent = Intent().apply {
         action = Intent.ACTION_SEND

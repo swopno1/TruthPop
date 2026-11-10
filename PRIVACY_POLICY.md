@@ -1,9 +1,10 @@
 # Privacy Policy for TruthPop – Truth or Dare
 
-**Last Updated:** October 9, 2026  
-**Effective Date:** October 9, 2026  
+**Last Updated:** November 10, 2026  
+**Effective Date:** November 10, 2026  
 **Publisher:** ViveScript Solutions LLC  
-**Website:** [https://www.vivescriptsolutions.com/](https://www.vivescriptsolutions.com/)  
+**Website:** [https://www.vivescriptsolutions.com/en/apps/truthpop](https://www.vivescriptsolutions.com/en/apps/truthpop)  
+**Live version of this policy:** [https://www.vivescriptsolutions.com/en/apps/truthpop/privacy](https://www.vivescriptsolutions.com/en/apps/truthpop/privacy)  
 **Contact:** [privacy@vivescriptsolutions.com](mailto:privacy@vivescriptsolutions.com)
 
 ---
@@ -28,7 +29,7 @@ We believe in strict data minimization:
 
 ## 3. Information Stored Locally on Your Device
 
-Any optional data you configure while playing—such as player names added to the temporary party turn picker, selected game intensity, language toggle, and favorited prompts—remains **100% local in device memory** during your session. This data is never transmitted to ViveScript Solutions LLC or any third-party server.
+Any optional data you configure while playing—such as player names in the party turn picker, selected game intensity, language choice, and favorited prompts—remains **100% on your device** (in-memory session state plus on-device preferences for language, haptics, and favorites so the app remembers them next launch). This data is never transmitted to ViveScript Solutions LLC or any third-party server.
 
 ---
 
@@ -46,6 +47,8 @@ For details on how Google processes and secures data, please review:
 - [How Google uses information from sites or apps that use our services](https://policies.google.com/technologies/partner-sites)
 
 Users can reset or opt out of personalized ads at any time via Android System Settings: `Settings > Google > Ads > Delete advertising ID` or `Opt out of Ads Personalization`.
+
+In regions where consent is required (EEA/UK), ads load only after your choice in Google's consent form, shown on first launch. Declining consent disables ads without limiting gameplay.
 
 ---
 
@@ -78,6 +81,6 @@ We may periodically update this Privacy Policy. Any updates will be reflected wi
 If you have any questions, feedback, or concerns regarding this Privacy Policy, please contact:
 
 **ViveScript Solutions LLC**  
-Website: [https://www.vivescriptsolutions.com/](https://www.vivescriptsolutions.com/)  
+Website: [https://www.vivescriptsolutions.com/en/apps/truthpop](https://www.vivescriptsolutions.com/en/apps/truthpop)  
 Email: [privacy@vivescriptsolutions.com](mailto:privacy@vivescriptsolutions.com)  
 Address: 1209 Orange Street, Wilmington, DE 19801, USA
