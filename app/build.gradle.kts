@@ -7,14 +7,14 @@ plugins {
 
 android {
   namespace = "com.vivescriptsolutions.truthpop"
-  compileSdk { version = release(37) }
+  compileSdk { version = release(36) { minorApiLevel = 1 } }
 
   defaultConfig {
     applicationId = "com.vivescriptsolutions.truthpop"
     minSdk = 24
     targetSdk = 36
-    versionCode = 4
-    versionName = "4.0"
+    versionCode = 5
+    versionName = "5.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }

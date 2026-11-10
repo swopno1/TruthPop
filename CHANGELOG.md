@@ -2,6 +2,13 @@
 
 All notable changes to the **TruthPop – Truth or Dare** application will be documented in this file.
 
+## [5.0.0] - 2026-11-10
+
+### Added & Fixed
+- **US State Privacy Regulations & Modernized UMP:** Upgraded User Messaging Platform implementation to support US state privacy regulation messages (California, Virginia, Colorado, Connecticut, Utah, etc.) allowing users to opt out of data sale/sharing, with on-demand Privacy Options form available in the About dialog.
+- **Predictive Back Navigation:** Enabled `android:enableOnBackInvokedCallback="true"` in `AndroidManifest.xml` to fix `WindowOnBackDispatcher` warnings and support Android 13+ predictive back animations.
+- **Build System Fix:** Resolved Gradle/AGP version conflict to ensure smooth compilation in AI Studio environment.
+
 ## [4.0.0] - 2026-11-10
 
 ### Added

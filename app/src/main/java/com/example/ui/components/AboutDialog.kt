@@ -113,6 +113,25 @@ fun AboutDialog(
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+
+                val context = androidx.compose.ui.platform.LocalContext.current
+                val activity = context as? android.app.Activity
+                if (activity != null && com.example.ads.ConsentManager.isPrivacyOptionsRequired(context)) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    androidx.compose.material3.OutlinedButton(
+                        onClick = {
+                            com.example.ads.ConsentManager.showPrivacyOptions(activity)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("privacy_options_button")
+                    ) {
+                        Text(
+                            text = if (isBn) "গোপনীয়তা বিকল্প ও সম্মতি (US/EU)" else "Privacy Options & Consent (US/EU)",
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                    }
+                }
             }
         },
         confirmButton = {
