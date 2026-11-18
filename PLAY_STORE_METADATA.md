@@ -6,7 +6,7 @@
 **Primary Language:** English (US) / Bengali (Bangla)  
 **Version:** 4.0 (Version Code: 4)  
 **Privacy Policy URL:** https://www.vivescriptsolutions.com/en/apps/truthpop/privacy  
-**Support Email:** privacy@vivescriptsolutions.com  
+**Support Email:** support@vivescriptsolutions.com  
 
 ---
 
